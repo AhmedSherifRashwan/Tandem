@@ -1,6 +1,8 @@
 <div align="center">
-  <img src="assets/icon.svg" width="96" alt="Tandem icon" />
-  <h1>Tandem</h1>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/wordmark-dark.svg" />
+    <img src="assets/wordmark.svg" width="360" alt="Tandem" />
+  </picture>
   <p><strong>Claude and Codex. One local workspace.</strong></p>
   <p>A macOS agent chat app that brings two perspectives together through MCP.</p>
   <p><a href="#quick-start">Quick start</a> · <a href="#how-the-modes-work">Reasoning modes</a> · <a href="#architecture">Architecture</a> · <a href="CONTRIBUTING.md">Contributing</a></p>
@@ -22,7 +24,7 @@ The app runs on your Mac, keeps its own chat history locally, and connects to th
 - **Work in a folder.** Browse files, edit text, inspect Git diffs, and let Codex implement requested changes.
 - **Run local commands.** Review the exact command in a native confirmation dialog before execution.
 - **Search the web.** Enable the agents' native web-search capabilities through their MCP adapters.
-- **Create reports.** Preview Markdown responses and export formatted A4 PDFs.
+- **Create reports.** Preview Markdown responses and export formatted A4 PDFs. Drag the preview divider to resize the pane; its width is remembered.
 - **Pick up where you left off.** Search and reopen conversations stored on your Mac.
 
 ## Quick start
@@ -103,6 +105,8 @@ Independent answers run concurrently. The remaining phases run in order. Synthes
 The file tools resolve paths and reject traversal or symlinks outside the selected workspace. The editor also protects `.git`, `.aws`, and `.ssh` subdirectories from direct saves.
 
 Explicit Terminal commands run with your Mac user permissions after confirmation. The selected folder is their working directory, **not an operating-system sandbox**. Codex's agent execution pass uses the CLI's workspace sandbox; it does not use a sandbox-bypass flag.
+
+Resize the workspace/preview pane by dragging its left divider. Double-click it to reset; focus it and use **Left/Right arrows** to adjust, **Shift** for larger steps, **Home/End** for the limits, or **Enter** to reset. The chat retains a minimum usable width. On phone-sized windows, the pane fills the screen.
 
 Keyboard shortcuts: **⌘N** for a new conversation, **Enter** to send, and **Shift+Enter** for a newline.
 
@@ -227,6 +231,12 @@ Native smoke tests use temporary histories and workspaces. CI runs the build and
 - Reports export to PDF; arbitrary PDF attachments are not parsed.
 - Deep-mode orchestration is covered by deterministic tests; live deep discussions, web-search results, and agent-written code changes were not separately exercised in the initial verification.
 - Public distribution still needs signing, notarization, and further release hardening. Windows and Linux are not supported by this version.
+
+## Roadmap
+
+[Read the proposed roadmap](docs/roadmap.md): explicit plan mode, reversible changes, role-based teams, isolated parallel workspaces, and better run visibility. These are proposals, not features available in this release.
+
+See [the brand assets and usage notes](docs/brand.md) for the Tandem logo and Mac icon.
 
 ## Contributing
 

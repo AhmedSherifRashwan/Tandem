@@ -1,4 +1,4 @@
-import { _electron as electron } from '@playwright/test';
+import { _electron as electron, expect } from '@playwright/test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import os from 'node:os';
@@ -18,6 +18,12 @@ try {
  await page.waitForFunction(() => document.querySelector('.section-label span')?.textContent === '1');
  const saved = await page.evaluate(() => window.tandem.state());
  assert.equal(saved.conversations.length,1);
+ assert.ok(await page.locator('.brand .mark img').evaluate(img => img.complete && img.naturalWidth > 0));
+ const divider = page.getByRole('separator', {name:'Resize preview pane'});
+ const initialWidth = Number(await divider.getAttribute('aria-valuenow'));
+ await divider.focus(); await page.keyboard.press('ArrowLeft');
+ await expect(divider).toHaveAttribute('aria-valuenow', String(initialWidth + 16));
+ await divider.dblclick(); await expect(divider).toHaveAttribute('aria-valuenow','400');
  await fs.mkdir('test-results',{recursive:true});
  await page.screenshot({path:'test-results/tandem-desktop.png'});
  // Exercise native PDF generation with a deterministic save-dialog result.

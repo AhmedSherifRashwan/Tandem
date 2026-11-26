@@ -19,3 +19,11 @@ The build is pinned to Electron 40.10.2, the compatible runtime cached on this M
 ## Tandem rename
 
 The renamed build passes 12 backend tests, including two checks for preserving and importing NexusLink history without overwriting existing Tandem data. The packaged Tandem app passes native startup, name/title checks, MCP connection, CLI discovery, chat persistence, and PDF export checks. The README screenshot was captured from this packaged build with isolated test history. The original NexusLink app bundle is retained; Tandem builds into `release/tandem/`.
+
+## Brand identity and adjustable preview
+
+The paired-T logo is used in the interface and in light/dark README wordmarks. The generated transparent PNG is packaged as the app's `icon.icns`; the editable flat SVG is also included. The identity was reviewed at full and small sizes.
+
+All six browser checks pass, including pointer dragging, keyboard resizing, saved width, reset, collapse/reopen, and viewport changes. CSS enforces the chat's minimum width even before resize observers update. The packaged Mac app also passes logo loading, keyboard resizing/reset, MCP startup, chat persistence and PDF export checks. The README screenshot is captured from the packaged app using isolated test history.
+
+The roadmap is research and a proposal only; no plan mode or additional agent-team execution was enabled in this change.

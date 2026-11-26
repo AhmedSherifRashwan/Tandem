@@ -2,3 +2,17 @@
 
 /* Primary labels stay readable; 11px is reserved for supporting metadata. */
 .search input,.history-empty,.history-row>button:first-child,.section-label,.panel-heading,.panel-tabs button,.panel-empty p,.file-list>button,.secondary,.agent-pair>span{font-size:13px}.mode-control button,.tool-toggle,.topbar button{font-size:12px}
+
+/* The preview keeps its preferred width, clamped to leave room for the chat. */
+.sheet.with-panel{grid-template-columns:minmax(420px,1fr) min(var(--preview-width,400px),calc(100% - 420px))}
+.workspace-panel{position:relative;overflow:visible}
+.panel-resizer{position:absolute;z-index:4;left:-5px;top:0;bottom:0;width:10px;cursor:col-resize;touch-action:none;outline:none;display:flex;align-items:center;justify-content:center}
+.panel-resizer::before{content:"";position:absolute;width:2px;top:0;bottom:0;background:transparent}
+.panel-resizer>span{width:3px;height:36px;border-radius:3px;background:#bdcacc}
+.panel-resizer:hover::before,.panel-resizer:focus-visible::before,.resizing-panel .panel-resizer::before{background:#1b6c80}
+.panel-resizer:hover>span,.panel-resizer:focus-visible>span{background:#1b6c80}
+.resizing-panel,.resizing-panel *{cursor:col-resize!important;user-select:none!important}
+@media(max-width:1000px){.sheet.with-panel{grid-template-columns:minmax(0,1fr)}.workspace-panel{position:absolute;width:var(--preview-width,400px);max-width:calc(100vw - 32px)}}
+@media(max-width:700px){.workspace-panel{width:auto;max-width:none}.panel-resizer{display:none}}
+
+.mark img{display:block;width:44px;height:44px}.mark.small img{width:27px;height:27px}.assistant-label .mark img{width:22px;height:22px}
