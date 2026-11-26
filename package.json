@@ -1,0 +1,73 @@
+{
+  "name": "nexuslink",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Local MCP workspace for Claude and Codex",
+  "author": "NexusLink",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "desktop": "npm run build && electron .",
+    "build": "tsc --noEmit && vite build",
+    "test": "node --test tests/*.test.mjs",
+    "package": "npm run build && electron-builder --mac dir",
+    "test:ui": "playwright test",
+    "test:desktop": "npm run build && node scripts/desktop-smoke.mjs",
+    "test:agents": "node scripts/smoke-agents.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.26.0",
+    "@fontsource/ibm-plex-sans": "^5.2.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1",
+    "lucide-react": "^0.468.0",
+    "zod": "^3.25.0",
+    "diff": "^8.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "typescript": "^5.9.0",
+    "vite": "^7.3.0",
+    "electron": "40.10.2",
+    "electron-builder": "^26.0.0",
+    "@playwright/test": "^1.58.0"
+  },
+  "build": {
+    "appId": "local.nexuslink.app",
+    "productName": "NexusLink",
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "mcp/**/*",
+      "package.json",
+      "LICENSE"
+    ],
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "target": "dir",
+      "identity": null,
+      "icon": "assets/icon.png"
+    },
+    "directories": {
+      "output": "release"
+    },
+    "electronDist": "node_modules/electron/dist"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AhmedSherifRashwan/NexusLink.git"
+  },
+  "homepage": "https://github.com/AhmedSherifRashwan/NexusLink#readme",
+  "bugs": {
+    "url": "https://github.com/AhmedSherifRashwan/NexusLink/issues"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}
