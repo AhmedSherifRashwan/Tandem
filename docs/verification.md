@@ -15,3 +15,7 @@ Verified on this Mac on 2026-11-26:
 Tests used isolated temporary histories and workspaces. They did not modify existing user conversations or project files. Live deep-mode discussions, live web-search results and agent-generated code changes were not separately exercised; their orchestration and configuration are covered by deterministic tests. The first release delivers stage-level progress, not token streaming. The app is unsigned and not notarized.
 
 The build is pinned to Electron 40.10.2, the compatible runtime cached on this Mac, and reuses the installed Electron distribution when packaging.
+
+## Tandem rename
+
+The renamed build passes 12 backend tests, including two checks for preserving and importing NexusLink history without overwriting existing Tandem data. The packaged Tandem app passes native startup, name/title checks, MCP connection, CLI discovery, chat persistence, and PDF export checks. The README screenshot was captured from this packaged build with isolated test history. The original NexusLink app bundle is retained; Tandem builds into `release/tandem/`.

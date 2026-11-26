@@ -1,6 +1,6 @@
 # Interface direction
 
-NexusLink is a long-session local workspace. Its main question is: what can the two agents accomplish together in this folder?
+Tandem is a long-session local workspace. Its main question is: what can the two agents accomplish together in this folder?
 
 The real objects are conversations, user prompts, independent answers, cross-reviews, unified responses, workspace files, Git changes, commands, and Markdown reports. The app starts empty; no sample conversations, claimed usage, or invented connection states are displayed.
 

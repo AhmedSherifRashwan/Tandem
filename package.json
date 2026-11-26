@@ -1,10 +1,10 @@
 {
-  "name": "nexuslink",
+  "name": "tandem",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "description": "Local MCP workspace for Claude and Codex",
-  "author": "NexusLink",
+  "author": "Tandem",
   "main": "electron/main.cjs",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
@@ -38,8 +38,8 @@
     "@playwright/test": "^1.58.0"
   },
   "build": {
-    "appId": "local.nexuslink.app",
-    "productName": "NexusLink",
+    "appId": "local.tandem.app",
+    "productName": "Tandem",
     "files": [
       "dist/**/*",
       "electron/**/*",
@@ -54,18 +54,18 @@
       "icon": "assets/icon.png"
     },
     "directories": {
-      "output": "release"
+      "output": "release/tandem"
     },
     "electronDist": "node_modules/electron/dist"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/AhmedSherifRashwan/NexusLink.git"
+    "url": "https://github.com/AhmedSherifRashwan/Tandem.git"
   },
-  "homepage": "https://github.com/AhmedSherifRashwan/NexusLink#readme",
+  "homepage": "https://github.com/AhmedSherifRashwan/Tandem#readme",
   "bugs": {
-    "url": "https://github.com/AhmedSherifRashwan/NexusLink/issues"
+    "url": "https://github.com/AhmedSherifRashwan/Tandem/issues"
   },
   "engines": {
     "node": ">=22.12.0"

@@ -3,7 +3,7 @@ const fs = require('node:fs/promises');
 const path = require('node:path');
 const os = require('node:os');
 const { randomUUID } = require('node:crypto');
-app.setName('NexusLink');
+app.setName('Tandem');
 let win, client, transport, state, active, stateFile;
 let saveQueue = Promise.resolve();
 const empty = () => ({ conversations: [], workspace: '', settings: { web: true, mode: 'normal', write: false } });
@@ -25,13 +25,13 @@ async function connect() {
   try { const versions = await fs.readdir(path.join(os.homedir(), '.nvm/versions/node')); paths.unshift(...versions.sort((a,b) => b.localeCompare(a, undefined, { numeric: true })).map(v => path.join(os.homedir(), '.nvm/versions/node', v, 'bin'))); } catch {}
   const env = Object.fromEntries(Object.entries(process.env).filter(([,v]) => typeof v === 'string'));
   transport = new StdioClientTransport({ command: process.execPath, args: [path.join(__dirname, '../mcp/server.mjs')], env: { ...env, ELECTRON_RUN_AS_NODE: '1', PATH: paths.join(path.delimiter) }, stderr: 'pipe' });
-  client = new Client({ name: 'nexuslink-desktop', version: '0.1.0' });
+  client = new Client({ name: 'tandem-desktop', version: '0.1.0' });
   await client.connect(transport);
   await client.listTools();
 }
-const broadcast = data => { if (win && !win.isDestroyed()) win.webContents.send('nexus:event', data); };
+const broadcast = data => { if (win && !win.isDestroyed()) win.webContents.send('tandem:event', data); };
 function register() {
-  const handle = (name, fn) => ipcMain.handle(`nexus:${name}`, (event, ...args) => {
+  const handle = (name, fn) => ipcMain.handle(`tandem:${name}`, (event, ...args) => {
     if (event.sender !== win.webContents || event.senderFrame !== win.webContents.mainFrame) throw new Error('Untrusted sender');
     return fn(...args);
   });
@@ -86,7 +86,7 @@ function register() {
     const { default: Markdown } = await import('react-markdown');
     const { default: gfm } = await import('remark-gfm');
     const html = renderToStaticMarkup(createElement(Markdown, { remarkPlugins: [gfm], children: text }));
-    const print = new BrowserWindow({ show: false, webPreferences: { sandbox: true, contextIsolation: true, nodeIntegration: false, partition: `nexus-print-${randomUUID()}` } });
+    const print = new BrowserWindow({ show: false, webPreferences: { sandbox: true, contextIsolation: true, nodeIntegration: false, partition: `tandem-print-${randomUUID()}` } });
     try {
       print.webContents.session.webRequest.onBeforeRequest({ urls: ['http://*/*', 'https://*/*'] }, (_, cb) => cb({ cancel: true }));
       await print.loadURL('data:text/html;charset=utf-8,' + encodeURIComponent(`<!doctype html><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'"><style>body{font:12px/1.65 -apple-system,Arial;color:#181818;padding:20px}h1{font-size:26px}h2{font-size:20px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f4f4f4;padding:12px}table{border-collapse:collapse;width:100%}td,th{border:1px solid #ddd;padding:6px}a{color:#195f71}img{display:none}p,li{orphans:3;widows:3}</style>${html}`));
@@ -96,6 +96,10 @@ function register() {
   });
 }
 app.whenReady().then(async () => {
+  if (!app.commandLine.hasSwitch('user-data-dir')) {
+    const { migrateHistory } = require('./history.cjs');
+    await migrateHistory(app.getPath('userData'), ['NexusLink', 'nexuslink'].map(name => path.join(app.getPath('appData'), name)));
+  }
   stateFile = path.join(app.getPath('userData'), 'history.json');
   await fs.mkdir(path.dirname(stateFile), { recursive: true });
   try { state = JSON.parse(await fs.readFile(stateFile, 'utf8')); if (!Array.isArray(state.conversations)) throw new Error('Invalid history'); }
@@ -104,10 +108,10 @@ app.whenReady().then(async () => {
   state.settings.write = false;
   register();
   await connect();
-  win = new BrowserWindow({ width: 1440, height: 940, minWidth: 760, minHeight: 600, title: 'NexusLink', titleBarStyle: 'hiddenInset', trafficLightPosition: { x: 20, y: 18 }, backgroundColor: '#f1f4f4', webPreferences: { preload: path.join(__dirname, 'preload.cjs'), nodeIntegration: false, contextIsolation: true, sandbox: true } });
+  win = new BrowserWindow({ width: 1440, height: 940, minWidth: 760, minHeight: 600, title: 'Tandem', titleBarStyle: 'hiddenInset', trafficLightPosition: { x: 20, y: 18 }, backgroundColor: '#f1f4f4', webPreferences: { preload: path.join(__dirname, 'preload.cjs'), nodeIntegration: false, contextIsolation: true, sandbox: true } });
   win.webContents.setWindowOpenHandler(({ url }) => { if (/^https?:\/\//.test(url)) shell.openExternal(url); return { action: 'deny' }; });
   win.webContents.on('will-navigate', e => e.preventDefault());
   await win.loadFile(path.join(__dirname, '../dist/index.html'));
-}).catch(error => { dialog.showErrorBox('NexusLink could not start', error.stack || error.message); app.quit(); });
+}).catch(error => { dialog.showErrorBox('Tandem could not start', error.stack || error.message); app.quit(); });
 app.on('window-all-closed', () => app.quit());
 app.on('before-quit', () => { active?.controller.abort(); client?.close().catch(() => {}); });

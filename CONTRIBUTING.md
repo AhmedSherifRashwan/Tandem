@@ -1,6 +1,6 @@
-# Contributing to NexusLink
+# Contributing to Tandem
 
-Thanks for helping improve NexusLink. Small, focused changes are easiest to review.
+Thanks for helping improve Tandem. Small, focused changes are easiest to review.
 
 ## Work locally
 

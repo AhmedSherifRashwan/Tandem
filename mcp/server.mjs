@@ -6,7 +6,7 @@ import path from 'node:path';
 import { createPatch } from 'diff';
 import { within, runProcess, extractAnswer, agentArgs, terminateProcesses } from './core.mjs';
 
-const server = new McpServer({ name: 'nexuslink-local', version: '0.1.0' });
+const server = new McpServer({ name: 'tandem-local', version: '0.1.0' });
 const result = value => ({ content: [{ type: 'text', text: JSON.stringify(value) }] });
 const root = z.string().min(1);
 const tool = (name, schema, fn) => server.tool(name, schema, async (args, context) => {
@@ -14,13 +14,13 @@ const tool = (name, schema, fn) => server.tool(name, schema, async (args, contex
   catch (error) { return { isError: true, content: [{ type: 'text', text: error.message }] }; }
 });
 tool('agent_status', {}, async () => Object.fromEntries(await Promise.all(['claude', 'codex'].map(async provider => {
-  try { const r = await runProcess(process.env[`NEXUS_${provider.toUpperCase()}_BIN`] || provider, ['--version'], { timeout: 10000 }); return [provider, { installed: r.code === 0, version: r.stdout.trim(), error: r.code ? r.stderr : null }]; }
+  try { const r = await runProcess(process.env[`TANDEM_${provider.toUpperCase()}_BIN`] || process.env[`NEXUS_${provider.toUpperCase()}_BIN`] || provider, ['--version'], { timeout: 10000 }); return [provider, { installed: r.code === 0, version: r.stdout.trim(), error: r.code ? r.stderr : null }]; }
   catch (e) { return [provider, { installed: false, error: e.message }]; }
 }))));
 tool('agent_generate', { provider: z.enum(['claude', 'codex']), prompt: z.string().min(1).max(500000), root, web: z.boolean().default(false), write: z.boolean().default(false) }, async (args, context) => {
   const cwd = await within(args.root);
   if (args.write && args.provider !== 'codex') throw new Error('Only Codex is the workspace writer.');
-  const r = await runProcess(process.env[`NEXUS_${args.provider.toUpperCase()}_BIN`] || args.provider, agentArgs(args.provider, args), { cwd, input: args.prompt, signal: context.signal });
+  const r = await runProcess(process.env[`TANDEM_${args.provider.toUpperCase()}_BIN`] || process.env[`NEXUS_${args.provider.toUpperCase()}_BIN`] || args.provider, agentArgs(args.provider, args), { cwd, input: args.prompt, signal: context.signal });
   if (r.code !== 0) throw new Error(`${args.provider} exited ${r.code}: ${r.stderr || r.stdout.slice(-2000)}`);
   return { text: extractAnswer(args.provider, r.stdout) };
 });

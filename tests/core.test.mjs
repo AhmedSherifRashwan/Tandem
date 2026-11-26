@@ -6,7 +6,7 @@ import path from 'node:path';
 import { within, extractAnswer, agentArgs, runProcess } from '../mcp/core.mjs';
 import { orchestrate } from '../electron/orchestrator.mjs';
 test('workspace boundary rejects traversal and symlinks outside root', async () => {
- const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'nexus-test-'));
+ const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'tandem-test-'));
  try { await fs.mkdir(path.join(dir, 'workspace')); await fs.writeFile(path.join(dir, 'secret'), 'secret'); await fs.symlink(path.join(dir, 'secret'), path.join(dir, 'workspace/link')); await assert.rejects(within(path.join(dir,'workspace'), '../secret'), /outside/); await assert.rejects(within(path.join(dir,'workspace'), 'link'), /outside/); assert.equal(await within(dir, 'workspace'), path.join(await fs.realpath(dir), 'workspace')); } finally { await fs.rm(dir, { recursive: true }); }
 });
 test('extracts real Claude and Codex result formats and surfaces failures', () => {

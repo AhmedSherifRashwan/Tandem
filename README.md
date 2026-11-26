@@ -1,16 +1,16 @@
 <div align="center">
-  <img src="assets/icon.svg" width="96" alt="NexusLink icon" />
-  <h1>NexusLink</h1>
+  <img src="assets/icon.svg" width="96" alt="Tandem icon" />
+  <h1>Tandem</h1>
   <p><strong>Claude and Codex. One local workspace.</strong></p>
   <p>A macOS agent chat app that brings two perspectives together through MCP.</p>
   <p><a href="#quick-start">Quick start</a> · <a href="#how-the-modes-work">Reasoning modes</a> · <a href="#architecture">Architecture</a> · <a href="CONTRIBUTING.md">Contributing</a></p>
 </div>
 
-![NexusLink desktop app with conversation history, dual-agent chat, and a workspace pane](docs/images/nexuslink.png)
+![Tandem desktop app with conversation history, dual-agent chat, and a workspace pane](docs/images/tandem.png)
 
-Ask a question, research a topic, or work on a codebase. NexusLink sends your prompt to **Claude Code and Codex**, compares their responses, and returns one cohesive answer. Turn on **Deep reasoning** to add a cross-review and revision before the final response.
+Ask a question, research a topic, or work on a codebase. Tandem sends your prompt to **Claude Code and Codex**, compares their responses, and returns one cohesive answer. Turn on **Deep reasoning** to add a cross-review and revision before the final response.
 
-The app runs on your Mac, keeps its own chat history locally, and connects to the agents through local **Model Context Protocol (MCP)** adapters. It uses your existing CLI logins; NexusLink does not integrate directly with model APIs or ask you to enter API keys.
+The app runs on your Mac, keeps its own chat history locally, and connects to the agents through local **Model Context Protocol (MCP)** adapters. It uses your existing CLI logins; Tandem does not integrate directly with model APIs or ask you to enter API keys.
 
 **Status:** early, source-build release for macOS. Apple Silicon has been tested. Builds are unsigned and not notarized. Model inference still runs with the providers; this is not an offline AI app.
 
@@ -39,8 +39,8 @@ The adapters use current CLI flags, including Claude Code's `--restricted` mode.
 ### Install and launch
 
 ```sh
-git clone https://github.com/AhmedSherifRashwan/NexusLink.git
-cd NexusLink
+git clone https://github.com/AhmedSherifRashwan/Tandem.git
+cd Tandem
 npm ci
 ```
 
@@ -73,7 +73,7 @@ The connection badge checks installation, not authentication or available usage.
 npm run package
 ```
 
-The app bundle is written to `release/mac-arm64/NexusLink.app` on Apple Silicon, or `release/mac/NexusLink.app` for an Intel build. Packaging reuses the installed Electron distribution. There is no signed installer or notarized download in this initial release.
+The app bundle is written to `release/tandem/mac-arm64/Tandem.app` on Apple Silicon, or `release/tandem/mac/Tandem.app` for an Intel build. Packaging reuses the installed Electron distribution. There is no signed installer or notarized download in this initial release.
 
 ## How the modes work
 
@@ -127,7 +127,7 @@ flowchart TD
 
 All agent and workspace-tool calls cross the local MCP boundary. The adapters then invoke the installed CLIs, which handle their own authenticated provider requests and built-in tools.
 
-Window controls, history persistence, file-picker dialogs, and PDF printing are desktop infrastructure handled by Electron. There are no direct model API integrations in NexusLink.
+Window controls, history persistence, file-picker dialogs, and PDF printing are desktop infrastructure handled by Electron. There are no direct model API integrations in Tandem.
 
 This project does not connect to the ChatGPT or Claude desktop applications, import their chat histories, or depend on an official general-purpose model-chat MCP server. It is an independent project, not affiliated with OpenAI or Anthropic.
 
@@ -163,19 +163,25 @@ docs/               Design notes, screenshot and verification record
 
 Built with Electron, React, TypeScript, Vite, the official MCP SDK, React Markdown, and Lucide. The chat UI is custom React; it does not use the `@assistant-ui/react` package.
 
+## Upgrading from NexusLink
+
+Tandem is the new name for NexusLink. On first launch, Tandem copies existing NexusLink history into its own data folder if no Tandem history exists. The original files are preserved, and existing Tandem history is never overwritten. Close the old app before switching so that the copied history includes your latest conversations.
+
+The older `NEXUS_CLAUDE_BIN` and `NEXUS_CODEX_BIN` overrides remain supported; `TANDEM_*` values take precedence.
+
 ## Privacy and configuration
 
-- **Local history:** conversations and completed stage outputs are stored in `~/Library/Application Support/NexusLink/history.json`.
+- **Local history:** conversations and completed stage outputs are stored in `~/Library/Application Support/Tandem/history.json`.
 - **Provider traffic:** prompts and relevant workspace context are sent through the CLIs to their providers. Provider terms, retention settings, and account limits still apply.
-- **Credentials:** the adapters rely on the CLIs' existing authentication. NexusLink does not add an API-key settings screen or copy credentials into chat history.
-- **App services:** NexusLink adds no hosted backend, analytics, or telemetry. The CLIs and providers retain their own behavior and settings.
+- **Credentials:** the adapters rely on the CLIs' existing authentication. Tandem does not add an API-key settings screen or copy credentials into chat history.
+- **App services:** Tandem adds no hosted backend, analytics, or telemetry. The CLIs and providers retain their own behavior and settings.
 - **Reports:** raw HTML is not executed, and remote report images are not loaded.
 
 Common executable locations are discovered automatically, including Homebrew, `~/.local/bin`, and NVM installations. Override executable paths when launching from Terminal if needed:
 
 ```sh
-NEXUS_CLAUDE_BIN=/absolute/path/to/claude \
-NEXUS_CODEX_BIN=/absolute/path/to/codex \
+TANDEM_CLAUDE_BIN=/absolute/path/to/claude \
+TANDEM_CODEX_BIN=/absolute/path/to/codex \
 npm run desktop
 ```
 

@@ -18,5 +18,5 @@ for (const width of [1440,1024,390]) test(`layout ${width}`,async ({page}) => {
  await expect(page.getByRole('textbox',{name:'Message Claude and Codex'})).toBeVisible();
  const overflow = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth);
  expect(overflow).toBe(false);
- await page.screenshot({path:`test-results/nexuslink-${width}.png`,fullPage:true});
+ await page.screenshot({path:`test-results/tandem-${width}.png`,fullPage:true});
 });
